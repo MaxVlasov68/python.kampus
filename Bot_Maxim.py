@@ -16,10 +16,12 @@ longpoll = VkBotLongPoll(vk_session, "187554026")
 filename="keyboard.json"
 file = open(filename, "r", encoding="UTF-8")
 main_keyboard=file.read()
-# game_keyboard = open(filename, "r", encoding="UTF-8")
+filename="game_keyboard.json"
+file = open(filename, "r", encoding="UTF-8")
+game_keyboard=file.read()
 gameStarted = False
-keyboard = main_keyboard
-# keyboard = game_keyboard
+keyboard1 = main_keyboard
+keyboard2 = game_keyboard
 
 def f(text):
     a=['1','2','3']
@@ -32,10 +34,11 @@ def f(text):
     s =  "спасибо за игру"
 
     return s
-  
+attachment="" 
 for event in longpoll.listen(): #Проверка действий
     print(event)
-    if event.type == VkBotEventType.MESSAGE_NEW:          
+    if event.type == VkBotEventType.MESSAGE_NEW:
+        keyboard = keyboard1
         if event.obj.text != '':
             if event.from_user:
                 text = event.obj.text
@@ -50,13 +53,14 @@ for event in longpoll.listen(): #Проверка действий
                     elif (text=="У меня все хорошо")or (text=="У меня все отлично") or (text=="У меня все плохо")or (text=="отлично")or (text=="хорошо")or (text=="плохо")or (text=="нормально"):
                         reply ="Здорово!  (≧ω≦) )"
                     elif text ==  "Начать":
-                        reply= "Привет)"
+                        reply= "Привет) ты хочешь поиграть? <3 "
                     elif text == "Где самые лучшие ребята?":
                         reply="В КамПусе <3 "
-                    elif text== "Я освоил python ?":
+                    elif text== "Я освоил python?":
                         reply = "Мой друг, ты освоил часть учебного материала, но тебе ещё нужно развиваться"
                     elif text == "Играть":
                         gameStarted = True
+                        keyboard = keyboard2
                         reply = 'введи число от 1 до 3'
                     elif text == "Я не играю":
                         reply ="Ладно, напиши в другое время, когда захочешь поиграть) <3 "
@@ -65,11 +69,14 @@ for event in longpoll.listen(): #Проверка действий
 --Как дела?
 --У меня все хорошо
 --Начать
---Где самые лучшие ребята ?
---Я освоил python ?
+--Где самые лучшие ребята?
+--Я освоил python?
 --Играть
---Я не играю"""
-                                
+--Я не играю
+--Кто такой Кабачок?"""
+                    elif text == "Кто такой Кабачок?":
+                        reply = "Кабачок это наш любимый кот, который живет в лагере Спутник <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 "
+                        attachment="photo-187554026_457239018"  
                     else:
                         reply="Bot_Friend не знает таких команд((("                
         if event.from_user:
@@ -77,4 +84,6 @@ for event in longpoll.listen(): #Проверка действий
             user_id=event.obj.from_id,
             random_id=get_random_id(),
             message=reply,
-            keyboard=keyboard)
+            keyboard=keyboard,
+            attachment=attachment)
+            
